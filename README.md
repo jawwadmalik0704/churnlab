@@ -1,6 +1,6 @@
 # ChurnLab
 
-ChurnLab is a machine learning project focused on understanding and implementing Logistic Regression from scratch for customer churn prediction.
+ChurnLab is a machine learning project focused on understanding and implementing **Logistic Regression from scratch** for customer churn prediction.
 
 The main goal is to learn the mathematics, optimization, preprocessing, and evaluation behind binary classification.
 
@@ -8,69 +8,71 @@ The main goal is to learn the mathematics, optimization, preprocessing, and eval
 
 # Prerequisites
 
-Both developers should use the same Python version and a current stable version of Git.
+Both developers should use the same Python version.
 
-## 1. Python 3.12.7
+## 1. Python 3.14.7
 
 ### Download
 
-Download the **Python 3.12.7 Windows 64-bit installer** from the official Python release page:
+Download **Python 3.14.7 for Windows** from the official Python release page:
 
-[Python 3.12.7 — Official Release](https://www.python.org/downloads/release/python-3127/?utm_source=chatgpt.com)
+https://www.python.org/downloads/release/python-3147/
 
-On the download page, under **Files → Windows**, download:
+Under **Files**, download:
 
 ```text
 Windows installer (64-bit)
 ```
 
+Do **not** use the embeddable/ZIP package for this project.
+
 ### Installation
 
 Run the installer.
 
-On the first installation screen:
-
-**IMPORTANT:** Enable:
+On the first installation screen, make sure this option is enabled:
 
 ```text
 Add python.exe to PATH
 ```
 
-Then select:
-
-```text
-Install Now
-```
+Then continue with the normal installation.
 
 ### Verify Python
 
-After installation, close and reopen PowerShell.
+After installation, close PowerShell and open a **new PowerShell terminal**.
 
 Run:
 
 ```powershell
-python --version
+py -3.14 --version
 ```
 
 Expected:
 
 ```text
-Python 3.12.7
+Python 3.14.7
 ```
 
-Also verify:
+Also run:
 
 ```powershell
-py --version
+python --version
 ```
 
-If Python 3.12.7 is installed correctly, you should be able to create the project environment using:
+This should normally show:
+
+```text
+Python 3.14.7
+```
+
+If `python --version` shows another version, that is not necessarily a problem. For this project, the important command is:
 
 ```powershell
-python -m venv .venv
+py -3.14
 ```
 
-If `python --version` does not show `Python 3.12.7`, stop and resolve the Python installation before continuing.
+because it explicitly selects Python 3.14.
 
 ---
 
@@ -82,23 +84,21 @@ Git is required for version control and GitHub collaboration.
 
 Download **Git for Windows** from the official website:
 
-[Git for Windows — Official Download](https://git-scm.com/install/windows?utm_source=chatgpt.com)
+https://git-scm.com/install/windows
 
-Use the **current stable Git for Windows x64 installer**.
+Use the current stable **Git for Windows 64-bit** installer.
 
-The exact Git patch version does not need to be identical between developers. Both developers should use a current stable release.
+The exact Git patch version does not need to be identical between developers.
 
 ### Installation
 
 Run the Git installer.
 
-For normal project development, the default installation options are sufficient.
-
-Continue through the installer using the recommended/default settings.
+The normal/default installation options are sufficient for this project.
 
 ### Verify Git
 
-Close and reopen PowerShell.
+Close and reopen PowerShell after installation.
 
 Run:
 
@@ -106,32 +106,66 @@ Run:
 git --version
 ```
 
-You should receive a Git version, for example:
+Expected output will look similar to:
 
 ```text
-git version 2.55.0
+git version 2.x.x
 ```
 
-The exact version may be newer or slightly different.
+The exact version may be newer.
 
 ---
 
 # Project Setup
 
+Each developer must create their **own local virtual environment**.
+
+The `.venv` directory is local to each computer and is **not uploaded to GitHub**.
+
+Both developers must use:
+
+```text
+Python 3.14.7
+```
+
+---
+
 ## 1. Clone the repository
+
+Clone the repository:
 
 ```powershell
 git clone <repository-url>
+```
+
+Enter the project:
+
+```powershell
 cd churnlab
 ```
 
-## 2. Create a virtual environment
+---
 
-Each developer must create their **own local virtual environment**.
+## 2. Create your own virtual environment
+
+Use Python 3.14 explicitly:
 
 ```powershell
-python -m venv .venv
+py -3.14 -m venv .venv
 ```
+
+This creates:
+
+```text
+churnlab/
+└── .venv/
+```
+
+Each developer creates their own `.venv` on their own computer.
+
+**Do not copy your `.venv` to another developer.**
+
+---
 
 ## 3. Activate the virtual environment
 
@@ -144,10 +178,16 @@ On Windows PowerShell:
 After activation, the terminal should show:
 
 ```text
-(.venv)
+(.venv) PS D:\churnlab>
 ```
 
-Verify Python:
+The exact path may be different on another computer.
+
+---
+
+## 4. Verify the virtual environment
+
+Run:
 
 ```powershell
 python --version
@@ -156,26 +196,77 @@ python --version
 Expected:
 
 ```text
-Python 3.12.7
+Python 3.14.7
 ```
 
-Also verify that Python is coming from the project environment:
+Then verify which Python executable is being used:
 
 ```powershell
 python -c "import sys; print(sys.executable)"
 ```
 
-The path should end with:
+Expected:
+
+```text
+D:\churnlab\.venv\Scripts\python.exe
+```
+
+The path will naturally be different on another developer's computer.
+
+The important part is:
 
 ```text
 churnlab\.venv\Scripts\python.exe
 ```
 
-## 4. Install project dependencies
+---
+
+## 5. Install project dependencies
+
+Once `requirements.txt` contains the project's dependencies, run:
 
 ```powershell
 pip install -r requirements.txt
 ```
+
+Do not install random packages that are not required by the project.
+
+---
+
+# Virtual Environment — Why Do We Use It?
+
+A virtual environment is like a **private Python workspace for one project**.
+
+For example:
+
+```text
+Computer
+│
+├── ChurnLab
+│   └── .venv
+│
+├── Resume Analyzer
+│   └── .venv
+│
+└── Other Project
+    └── .venv
+```
+
+Each project can have its own packages and package versions without interfering with other projects.
+
+For ChurnLab:
+
+```text
+Python 3.14.7
+       ↓
+     .venv
+       ↓
+ChurnLab packages
+```
+
+Each developer has their **own `.venv`**.
+
+The `.venv` directory should never be committed to Git.
 
 ---
 
@@ -193,7 +284,7 @@ feature branches
 
 ## `main`
 
-Stable/final version of the project.
+The stable/final version of the project.
 
 Do not work directly on `main`.
 
@@ -210,9 +301,11 @@ Individual development branches.
 Examples:
 
 ```text
+feature/data-loading
 feature/logistic-regression
 feature/preprocessing
 feature/metrics
+feature/visualization
 ```
 
 ---
@@ -232,7 +325,7 @@ Create a feature branch:
 git checkout -b feature/your-feature-name
 ```
 
-Work on your assigned task and test your changes.
+Work on your assigned task.
 
 Check your changes:
 
@@ -272,13 +365,17 @@ The `main` branch is reserved for the stable project version.
 
 # Collaboration Rules
 
-* Do not work directly on `main`.
-* Do not commit `.venv/`.
-* Keep feature branches focused on one task.
-* Pull the latest `dev` before starting new work.
-* Test your changes before creating a Pull Request.
-* Keep commits clear and meaningful.
-* Discuss major changes with the other developer before modifying shared work.
+- Do not work directly on `main`.
+- Do not commit `.venv/`.
+- Do not commit personal Python installation files.
+- Keep feature branches focused on one task.
+- Pull the latest `dev` before starting new work.
+- Test your changes before creating a Pull Request.
+- Keep commits clear and meaningful.
+- Discuss major architectural changes before implementing them.
+- Do not overwrite another developer's work without discussion.
+- Both developers should understand the code they contribute.
+- AI may be used for learning, explanation, and debugging, but code should not be blindly copied.
 
 ---
 
@@ -311,3 +408,23 @@ churnlab/
 ```
 
 The project structure may be updated as development progresses.
+
+---
+
+# Important Python Version Rule
+
+ChurnLab uses:
+
+```text
+Python 3.14.7
+```
+
+Both developers should create their virtual environment using:
+
+```powershell
+py -3.14 -m venv .venv
+```
+
+This ensures that both developers use the same Python major/minor version.
+
+The `.venv` directory itself is **local and must not be pushed to GitHub**.
