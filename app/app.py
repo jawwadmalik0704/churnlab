@@ -39,6 +39,13 @@ from src.metrics import (
     precision,
     recall,
     f1_score,
+    confusion_matrix,
+)
+
+from visualization.plots import (
+    plot_loss_curve,
+    plot_confusion_matrix,
+    plot_feature_weights,
 )
 
 # ============================================================
@@ -49,16 +56,63 @@ st.set_page_config(
     page_title="ChurnLab",
     page_icon="📊",
     layout="wide",
+    initial_sidebar_state="expanded",
 )
 
 
 # ============================================================
-# TITLE
+# HEADER
 # ============================================================
 
 st.title("ChurnLab")
 
-st.write("Logistic Regression from scratch for customer churn prediction.")
+st.caption("Logistic Regression from scratch for customer churn prediction")
+
+st.divider()
+
+
+# ============================================================
+# SIDEBAR
+# ============================================================
+
+with st.sidebar:
+
+    st.header("ChurnLab")
+
+    st.write(
+        "A from-scratch machine learning project "
+        "for binary customer churn prediction."
+    )
+
+    st.divider()
+
+    st.subheader("ML Pipeline")
+
+    st.write("""
+        **1. Data**
+        
+        Load customer churn data.
+
+        **2. Preprocessing**
+        
+        Split, encode, and standardize data.
+
+        **3. Training**
+        
+        Train logistic regression using gradient descent.
+
+        **4. Prediction**
+        
+        Generate churn probabilities and classes.
+
+        **5. Evaluation**
+        
+        Accuracy, precision, recall, F1, and confusion matrix.
+        """)
+
+    st.divider()
+
+    st.caption("Built with Python, NumPy, Pandas, Matplotlib, " "and Streamlit.")
 
 
 # ============================================================
@@ -68,7 +122,9 @@ st.write("Logistic Regression from scratch for customer churn prediction.")
 
 @st.cache_data
 def get_data():
+
     dataset_path = PROJECT_ROOT / "data" / "dataset.csv"
+
     return load_data(dataset_path)
 
 
@@ -84,27 +140,49 @@ st.header("Dataset Overview")
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.metric("Customers", len(df))
+
+    st.metric(
+        "Customers",
+        len(df),
+    )
+
 
 with col2:
-    st.metric("Features", len(df.columns) - 1)
+
+    st.metric(
+        "Features",
+        len(df.columns) - 1,
+    )
+
 
 with col3:
-    churn_rate = df["churn"].mean()
-    st.metric("Churn Rate", f"{churn_rate:.1%}")
 
-st.dataframe(
-    df,
-    use_container_width=True,
-    hide_index=True,
-)
+    churn_rate = df["churn"].mean()
+
+    st.metric(
+        "Churn Rate",
+        f"{churn_rate:.1%}",
+    )
+
+
+with st.expander("View Dataset"):
+
+    st.dataframe(
+        df,
+        use_container_width=True,
+        hide_index=True,
+    )
 
 
 # ============================================================
 # FEATURES AND TARGET
 # ============================================================
 
-X = df.drop("churn", axis=1)
+X = df.drop(
+    "churn",
+    axis=1,
+)
+
 y = df["churn"]
 
 
@@ -147,39 +225,58 @@ y_test_num = y_test.to_numpy(dtype=int)
 # STANDARDIZATION
 # ============================================================
 
+# IMPORTANT:
 # Mean and standard deviation are calculated
-# ONLY from the training data.
+# ONLY from training data.
 
 train_mean = calculate_mean(X_train_num)
 
-train_std = calculate_std(X_train_num, train_mean)
+train_std = calculate_std(
+    X_train_num,
+    train_mean,
+)
 
-X_train_scaled = standardize(X_train_num, train_mean, train_std)
+X_train_scaled = standardize(
+    X_train_num,
+    train_mean,
+    train_std,
+)
 
-X_test_scaled = standardize(X_test_num, train_mean, train_std)
+X_test_scaled = standardize(
+    X_test_num,
+    train_mean,
+    train_std,
+)
 
 
 # ============================================================
 # MODEL TRAINING
 # ============================================================
 
-st.header("Model")
+st.header("Model Training")
 
-model = LogisticRegression(learning_rate=0.1, epochs=1000)
+model = LogisticRegression(
+    learning_rate=0.1,
+    epochs=1000,
+)
 
-model.fit(X_train_scaled, y_train_num)
+model.fit(
+    X_train_scaled,
+    y_train_num,
+)
+
+st.success("Logistic Regression model trained successfully.")
 
 
 # ============================================================
 # TEST PREDICTIONS
 # ============================================================
 
-# IMPORTANT:
-# predict_probability is a standalone function.
-
-test_probabilities = predict_probability(X_test_scaled, model.weights, model.bias)
-
-# probability_to_class is also a standalone function.
+test_probabilities = predict_probability(
+    X_test_scaled,
+    model.weights,
+    model.bias,
+)
 
 test_predictions = probability_to_class(test_probabilities)
 
@@ -188,17 +285,29 @@ test_predictions = probability_to_class(test_probabilities)
 # METRICS
 # ============================================================
 
-model_accuracy = accuracy(y_test_num, test_predictions)
+model_accuracy = accuracy(
+    y_test_num,
+    test_predictions,
+)
 
-model_precision = precision(y_test_num, test_predictions)
+model_precision = precision(
+    y_test_num,
+    test_predictions,
+)
 
-model_recall = recall(y_test_num, test_predictions)
+model_recall = recall(
+    y_test_num,
+    test_predictions,
+)
 
-model_f1 = f1_score(y_test_num, test_predictions)
+model_f1 = f1_score(
+    y_test_num,
+    test_predictions,
+)
 
 
 # ============================================================
-# DISPLAY METRICS
+# MODEL PERFORMANCE
 # ============================================================
 
 st.header("Model Performance")
@@ -206,20 +315,103 @@ st.header("Model Performance")
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.metric("Accuracy", f"{model_accuracy:.1%}")
+
+    st.metric(
+        "Accuracy",
+        f"{model_accuracy:.1%}",
+    )
+
 
 with col2:
-    st.metric("Precision", f"{model_precision:.1%}")
+
+    st.metric(
+        "Precision",
+        f"{model_precision:.1%}",
+    )
+
 
 with col3:
-    st.metric("Recall", f"{model_recall:.1%}")
+
+    st.metric(
+        "Recall",
+        f"{model_recall:.1%}",
+    )
+
 
 with col4:
-    st.metric("F1 Score", f"{model_f1:.1%}")
+
+    st.metric(
+        "F1 Score",
+        f"{model_f1:.1%}",
+    )
 
 
 # ============================================================
-# TEST RESULTS
+# EVALUATION NOTE
+# ============================================================
+
+st.info(f"""
+    **Evaluation note:** The test set contains only
+    {len(y_test_num)} customers. Because this is a small
+    educational dataset, individual predictions can have
+    a large effect on the evaluation metrics.
+    """)
+
+
+# ============================================================
+# CONFUSION MATRIX
+# ============================================================
+
+st.header("Confusion Matrix")
+
+tn, fp, fn, tp = confusion_matrix(
+    y_test_num,
+    test_predictions,
+)
+
+cm_col1, cm_col2 = st.columns([1.4, 1])
+
+
+with cm_col1:
+
+    confusion_fig = plot_confusion_matrix(
+        y_test_num,
+        test_predictions,
+    )
+
+    st.pyplot(
+        confusion_fig,
+        clear_figure=True,
+    )
+
+
+with cm_col2:
+
+    st.subheader("Prediction Breakdown")
+
+    st.metric(
+        "True Negatives",
+        int(tn),
+    )
+
+    st.metric(
+        "False Positives",
+        int(fp),
+    )
+
+    st.metric(
+        "False Negatives",
+        int(fn),
+    )
+
+    st.metric(
+        "True Positives",
+        int(tp),
+    )
+
+
+# ============================================================
+# TEST PREDICTIONS
 # ============================================================
 
 st.header("Test Predictions")
@@ -227,7 +419,10 @@ st.header("Test Predictions")
 results = pd.DataFrame(
     {
         "Actual": y_test_num,
-        "Probability": np.round(test_probabilities, 4),
+        "Probability": np.round(
+            test_probabilities,
+            4,
+        ),
         "Prediction": test_predictions,
     }
 )
@@ -247,39 +442,32 @@ st.header("Training Loss")
 
 if hasattr(model, "loss_history"):
 
-    loss_df = pd.DataFrame(
-        {
-            "Epoch": range(1, len(model.loss_history) + 1),
-            "Loss": model.loss_history,
-        }
+    loss_fig = plot_loss_curve(
+        model.loss_history,
     )
 
-    st.line_chart(
-        loss_df,
-        x="Epoch",
-        y="Loss",
+    st.pyplot(
+        loss_fig,
+        clear_figure=True,
     )
 
 
 # ============================================================
-# LEARNED WEIGHTS
+# LEARNED FEATURE WEIGHTS
 # ============================================================
 
 st.header("Learned Feature Weights")
 
 feature_names = list(X_train_encoded.columns)
 
-weights_df = pd.DataFrame(
-    {
-        "Feature": feature_names,
-        "Weight": model.weights,
-    }
+weights_fig = plot_feature_weights(
+    feature_names,
+    model.weights,
 )
 
-st.bar_chart(
-    weights_df,
-    x="Feature",
-    y="Weight",
+st.pyplot(
+    weights_fig,
+    clear_figure=True,
 )
 
 
@@ -289,10 +477,11 @@ st.bar_chart(
 
 st.header("Predict Customer Churn")
 
-st.write("Enter customer information to estimate churn probability.")
+st.write("Enter customer information to estimate " "the probability of churn.")
 
 
 col1, col2 = st.columns(2)
+
 
 with col1:
 
@@ -346,7 +535,10 @@ contract_type = st.selectbox(
 # CUSTOMER PREDICTION
 # ============================================================
 
-if st.button("Predict Churn", type="primary"):
+if st.button(
+    "Predict Churn",
+    type="primary",
+):
 
     customer = pd.DataFrame(
         [
@@ -360,32 +552,72 @@ if st.button("Predict Churn", type="primary"):
         ]
     )
 
-    # Encode using the SAME project encoding function.
-    #
-    # The second argument is required by your
-    # encode_categorical(X_train, X_test) function.
+    # Same categorical encoding
+    # used during model training.
 
-    customer_encoded, _ = encode_categorical(customer, customer.copy())
+    customer_encoded, _ = encode_categorical(
+        customer,
+        customer.copy(),
+    )
 
     customer_num = customer_encoded.to_numpy(dtype=float)
 
+    # IMPORTANT:
     # Use training mean/std.
-    customer_scaled = standardize(customer_num, train_mean, train_std)
+    # Do NOT calculate new statistics
+    # from this single customer.
 
-    # Standalone prediction function.
+    customer_scaled = standardize(
+        customer_num,
+        train_mean,
+        train_std,
+    )
 
-    probability = predict_probability(customer_scaled, model.weights, model.bias)[0]
-
-    # Standalone class conversion function.
+    probability = predict_probability(
+        customer_scaled,
+        model.weights,
+        model.bias,
+    )[0]
 
     prediction = probability_to_class(np.array([probability]))[0]
 
     st.divider()
 
-    if prediction == 1:
+    # ========================================================
+    # RESULT
+    # ========================================================
 
-        st.error(f"High churn risk — " f"Probability: {probability:.2%}")
+    result_col1, result_col2 = st.columns(2)
 
-    else:
+    with result_col1:
 
-        st.success(f"Low churn risk — " f"Probability: {probability:.2%}")
+        st.subheader("Prediction")
+
+        if prediction == 1:
+
+            st.error("High Churn Risk")
+
+        else:
+
+            st.success("Low Churn Risk")
+
+    with result_col2:
+
+        st.subheader("Churn Probability")
+
+        st.metric(
+            "Probability",
+            f"{probability:.2%}",
+        )
+
+
+# ============================================================
+# FOOTER
+# ============================================================
+
+st.divider()
+
+st.caption(
+    "ChurnLab • Logistic Regression from scratch • "
+    "Educational machine-learning project"
+)

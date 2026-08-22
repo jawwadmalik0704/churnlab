@@ -1,0 +1,56 @@
+[theme]
+
+base = "light"
+
+primaryColor = "#2563EB"
+
+backgroundColor = "#F7F9FC"
+
+secondaryBackgroundColor = "#FFFFFF"
+
+textColor = "#111827"
+
+font = "sans-serif"
+
+baseRadius = "medium"
+
+borderColor = "#E5E7EB"
+
+showWidgetBorder = true
+
+showSidebarBorder = true
+
+chartCategoricalColors = [
+    "#2563EB",
+    "#14B8A6",
+    "#F59E0B",
+    "#EF4444",
+    "#8B5CF6",
+    "#06B6D4"
+]
+
+chartSequentialColors = [
+    "#EFF6FF",
+    "#DBEAFE",
+    "#BFDBFE",
+    "#93C5FD",
+    "#60A5FA",
+    "#3B82F6",
+    "#2563EB",
+    "#1D4ED8",
+    "#1E40AF",
+    "#1E3A8A"
+]
+
+
+[theme.sidebar]
+
+backgroundColor = "#FFFFFF"
+
+secondaryBackgroundColor = "#F7F9FC"
+
+textColor = "#111827"
+
+primaryColor = "#2563EB"
+
+borderColor = "#E5E7EB"
