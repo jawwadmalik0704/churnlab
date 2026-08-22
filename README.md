@@ -1,381 +1,254 @@
 # ChurnLab
 
-ChurnLab is a machine learning project focused on understanding and implementing **Logistic Regression from scratch** for customer churn prediction.
+### Logistic Regression From Scratch for Customer Churn Prediction
 
-The main goal is to learn the mathematics, optimization, preprocessing, and evaluation behind binary classification.
+ChurnLab is a five-day machine learning learning project built to understand **what happens inside a machine learning classification pipeline**, rather than simply calling a pre-built machine learning model.
 
----
+The project implements Logistic Regression from scratch and connects the model to an interactive Streamlit application for customer churn prediction.
 
-# Prerequisites
-
-Both developers should use the same Python version.
-
-## 1. Python 3.14.7
-
-### Download
-
-Download **Python 3.14.7 for Windows** from the official Python release page:
-
-https://www.python.org/downloads/release/python-3147/
-
-Under **Files**, download:
-
-```text
-Windows installer (64-bit)
-```
-
-Do **not** use the embeddable/ZIP package for this project.
-
-### Installation
-
-Run the installer.
-
-On the first installation screen, make sure this option is enabled:
-
-```text
-Add python.exe to PATH
-```
-
-Then continue with the normal installation.
-
-### Verify Python
-
-After installation, close PowerShell and open a **new PowerShell terminal**.
-
-Run:
-
-```powershell
-py -3.14 --version
-```
-
-Expected:
-
-```text
-Python 3.14.7
-```
-
-Also run:
-
-```powershell
-python --version
-```
-
-This should normally show:
-
-```text
-Python 3.14.7
-```
-
-If `python --version` shows another version, that is not necessarily a problem. For this project, the important command is:
-
-```powershell
-py -3.14
-```
-
-because it explicitly selects Python 3.14.
+> **The main goal of ChurnLab is learning the machine learning process behind the model — the Streamlit application is the interface used to demonstrate that process.**
 
 ---
 
-# 2. Git
+## Live Demo
 
-Git is required for version control and GitHub collaboration.
-
-### Download
-
-Download **Git for Windows** from the official website:
-
-https://git-scm.com/install/windows
-
-Use the current stable **Git for Windows 64-bit** installer.
-
-The exact Git patch version does not need to be identical between developers.
-
-### Installation
-
-Run the Git installer.
-
-The normal/default installation options are sufficient for this project.
-
-### Verify Git
-
-Close and reopen PowerShell after installation.
-
-Run:
-
-```powershell
-git --version
-```
-
-Expected output will look similar to:
-
-```text
-git version 2.x.x
-```
-
-The exact version may be newer.
+**Coming soon — deployment in progress.**
 
 ---
 
-# Project Setup
+## Project Overview
 
-Each developer must create their **own local virtual environment**.
+ChurnLab takes customer information, processes the data, trains a Logistic Regression model, evaluates its predictions, and exposes the final model through an interactive web application.
 
-The `.venv` directory is local to each computer and is **not uploaded to GitHub**.
-
-Both developers must use:
+The complete pipeline is:
 
 ```text
-Python 3.14.7
+Raw Customer Dataset
+        ↓
+Data Loading
+        ↓
+Train / Test Split
+        ↓
+Categorical Encoding
+        ↓
+Numerical Conversion
+        ↓
+Feature Standardization
+        ↓
+Logistic Regression
+        ↓
+Sigmoid Probability
+        ↓
+Loss Calculation
+        ↓
+Gradient Descent
+        ↓
+Weight & Bias Updates
+        ↓
+Model Predictions
+        ↓
+Evaluation Metrics
+        ↓
+Visualization
+        ↓
+Streamlit Application
 ```
 
 ---
 
-## 1. Clone the repository
+## Why This Project?
 
-Clone the repository:
+The purpose of this project was not simply to use a machine learning library and obtain predictions.
 
-```powershell
-git clone <repository-url>
-```
+The objective was to understand the internal workflow of a classification model:
 
-Enter the project:
+- How raw data becomes numerical model input
+- Why categorical variables need encoding
+- Why features are standardized
+- How Logistic Regression produces probabilities
+- How the sigmoid function is used
+- How loss measures model performance
+- How gradients are calculated
+- How gradient descent updates parameters
+- How weights and bias are learned
+- How probabilities become class predictions
+- How classification metrics evaluate a model
+- How a trained model can be connected to an application
 
-```powershell
-cd churnlab
-```
-
----
-
-## 2. Create your own virtual environment
-
-Use Python 3.14 explicitly:
-
-```powershell
-py -3.14 -m venv .venv
-```
-
-This creates:
-
-```text
-churnlab/
-└── .venv/
-```
-
-Each developer creates their own `.venv` on their own computer.
-
-**Do not copy your `.venv` to another developer.**
+The project therefore focuses on **machine learning fundamentals and implementation**, not only the final prediction interface.
 
 ---
 
-## 3. Activate the virtual environment
+# Machine Learning Implementation
 
-On Windows PowerShell:
+## Logistic Regression From Scratch
 
-```powershell
-.\.venv\Scripts\Activate.ps1
-```
+The core Logistic Regression model was implemented manually rather than using a ready-made Logistic Regression estimator from a machine learning library.
 
-After activation, the terminal should show:
+The implementation includes:
 
-```text
-(.venv) PS D:\churnlab>
-```
+- Model weights
+- Model bias
+- Sigmoid function
+- Forward prediction
+- Loss calculation
+- Gradient calculation
+- Gradient descent
+- Parameter updates
+- Training over multiple epochs
+- Probability prediction
+- Conversion of probabilities into binary classes
 
-The exact path may be different on another computer.
-
----
-
-## 4. Verify the virtual environment
-
-Run:
-
-```powershell
-python --version
-```
-
-Expected:
-
-```text
-Python 3.14.7
-```
-
-Then verify which Python executable is being used:
-
-```powershell
-python -c "import sys; print(sys.executable)"
-```
-
-Expected:
-
-```text
-D:\churnlab\.venv\Scripts\python.exe
-```
-
-The path will naturally be different on another developer's computer.
-
-The important part is:
-
-```text
-churnlab\.venv\Scripts\python.exe
-```
+The model learns parameters from the training data and uses them to predict whether a customer is likely to churn.
 
 ---
 
-## 5. Install project dependencies
+## Training Process
 
-Once `requirements.txt` contains the project's dependencies, run:
+During training, the model repeatedly performs the following process:
 
-```powershell
-pip install -r requirements.txt
+```text
+Input Features
+      ↓
+Linear Combination
+      ↓
+Sigmoid Function
+      ↓
+Predicted Probability
+      ↓
+Loss
+      ↓
+Gradients
+      ↓
+Update Weights & Bias
+      ↓
+Next Epoch
 ```
 
-Do not install random packages that are not required by the project.
+The training process records the loss over the epochs so that the optimization process can be visualized.
 
 ---
 
-# Virtual Environment — Why Do We Use It?
+# Data Processing
 
-A virtual environment is like a **private Python workspace for one project**.
+The project includes a preprocessing pipeline implemented without relying on a pre-built preprocessing pipeline.
 
-For example:
+### 1. Data Loading
 
-```text
-Computer
-│
-├── ChurnLab
-│   └── .venv
-│
-├── Resume Analyzer
-│   └── .venv
-│
-└── Other Project
-    └── .venv
-```
-
-Each project can have its own packages and package versions without interfering with other projects.
-
-For ChurnLab:
+The customer dataset is loaded from:
 
 ```text
-Python 3.14.7
-       ↓
-     .venv
-       ↓
-ChurnLab packages
+data/dataset.csv
 ```
 
-Each developer has their **own `.venv`**.
+### 2. Train/Test Split
 
-The `.venv` directory should never be committed to Git.
+The data is divided into training and testing sets.
+
+The test data is kept separate from the training process so that the model can be evaluated on unseen samples.
+
+### 3. Categorical Encoding
+
+The `contract_type` feature contains categorical values:
+
+```text
+month-to-month
+one-year
+two-year
+```
+
+These categories are converted into numerical indicator features.
+
+### 4. Feature Standardization
+
+Numerical features are standardized using the training-set mean and standard deviation.
+
+The training statistics are then reused when transforming the test data and new customer inputs.
+
+This prevents the test/customer data from influencing the training preprocessing statistics.
 
 ---
 
-# Git Collaboration
+# Model Evaluation
 
-The project uses three levels of branches:
+The project implements classification evaluation metrics to measure model performance.
 
-```text
-main
-  ↑
-dev
-  ↑
-feature branches
-```
+The evaluation includes:
 
-## `main`
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+- Confusion Matrix
 
-The stable/final version of the project.
-
-Do not work directly on `main`.
-
-## `dev`
-
-Development and integration branch.
-
-Completed feature work is merged into `dev` first.
-
-## `feature/*`
-
-Individual development branches.
-
-Examples:
+The confusion matrix separates predictions into:
 
 ```text
-feature/data-loading
-feature/logistic-regression
-feature/preprocessing
-feature/metrics
-feature/visualization
+                 Predicted
+                 0       1
+
+Actual 0        TN      FP
+Actual 1        FN      TP
 ```
+
+These metrics provide different perspectives on classification performance instead of relying only on accuracy.
 
 ---
 
-# Basic Development Workflow
+# Visualizations
 
-Before starting new work:
+The project includes visualizations for understanding the model and its training process.
 
-```powershell
-git checkout dev
-git pull origin dev
-```
+### Training Loss
 
-Create a feature branch:
+Shows how the training loss changes across epochs.
 
-```powershell
-git checkout -b feature/your-feature-name
-```
+### Confusion Matrix
 
-Work on your assigned task.
+Shows the relationship between actual and predicted classes.
 
-Check your changes:
+### Feature Weights
 
-```powershell
-git status
-```
+Shows the learned Logistic Regression weights for the input features.
 
-Stage changes:
-
-```powershell
-git add .
-```
-
-Commit:
-
-```powershell
-git commit -m "Describe your change"
-```
-
-Push your feature branch:
-
-```powershell
-git push -u origin feature/your-feature-name
-```
-
-Create a Pull Request:
-
-```text
-feature/your-feature-name → dev
-```
-
-After review and testing, merge the Pull Request into `dev`.
-
-The `main` branch is reserved for the stable project version.
+These visualizations help connect the mathematical model with observable training and prediction behavior.
 
 ---
 
-# Collaboration Rules
+# Interactive Streamlit Application
 
-- Do not work directly on `main`.
-- Do not commit `.venv/`.
-- Do not commit personal Python installation files.
-- Keep feature branches focused on one task.
-- Pull the latest `dev` before starting new work.
-- Test your changes before creating a Pull Request.
-- Keep commits clear and meaningful.
-- Discuss major architectural changes before implementing them.
-- Do not overwrite another developer's work without discussion.
-- Both developers should understand the code they contribute.
-- AI may be used for learning, explanation, and debugging, but code should not be blindly copied.
+The final model is connected to a Streamlit application.
+
+The application provides:
+
+- Dataset overview
+- Customer count
+- Feature information
+- Churn rate
+- Model performance metrics
+- Test predictions
+- Prediction probabilities
+- Training-loss visualization
+- Learned feature weights
+- Interactive customer churn prediction
+
+A user can enter customer information such as:
+
+- Age
+- Tenure
+- Monthly charges
+- Support calls
+- Contract type
+
+and receive:
+
+```text
+Churn Prediction
++
+Churn Probability
+```
+
+The application uses the same preprocessing logic and trained model implemented in the project.
 
 ---
 
@@ -384,47 +257,471 @@ The `main` branch is reserved for the stable project version.
 ```text
 churnlab/
 │
+├── app/
+│   └── app.py
+│
 ├── data/
 │   └── dataset.csv
 │
+├── notebooks/
+│   └── experiments.ipynb
+│
 ├── src/
-│   ├── preprocessing.py
 │   ├── logistic_regression.py
 │   ├── metrics.py
+│   ├── preprocessing.py
 │   └── train.py
 │
 ├── visualization/
 │   └── plots.py
 │
-├── app/
-│   └── app.py
-│
-├── notebooks/
-│   └── experiments.ipynb
+├── .streamlit/
+│   └── config.toml
 │
 ├── requirements.txt
 ├── README.md
 └── .gitignore
 ```
 
-The project structure may be updated as development progresses.
+---
+
+# File Responsibilities
+
+## `src/logistic_regression.py`
+
+Contains the core Logistic Regression implementation.
+
+Responsible for:
+
+- Model initialization
+- Sigmoid calculation
+- Forward prediction
+- Loss calculation
+- Gradient calculation
+- Gradient descent
+- Weight updates
+- Bias updates
+- Training history
 
 ---
 
-# Important Python Version Rule
+## `src/preprocessing.py`
 
-ChurnLab uses:
+Contains the data preparation pipeline.
+
+Responsible for:
+
+- Loading the dataset
+- Train/test splitting
+- Categorical encoding
+- Mean calculation
+- Standard deviation calculation
+- Feature standardization
+
+---
+
+## `src/metrics.py`
+
+Contains the evaluation functions.
+
+Responsible for:
+
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+- Confusion matrix
+
+---
+
+## `src/train.py`
+
+Contains the training workflow that connects preprocessing and model training.
+
+It demonstrates how the different components of the machine learning pipeline work together.
+
+---
+
+## `visualization/plots.py`
+
+Contains reusable visualization functions for:
+
+- Training loss
+- Confusion matrix
+- Feature weights
+
+---
+
+## `notebooks/experiments.ipynb`
+
+Contains the learning and experimentation workflow.
+
+The notebook demonstrates the project step by step and provides a practical environment for understanding the model and its results.
+
+---
+
+## `app/app.py`
+
+Contains the Streamlit application.
+
+It connects:
 
 ```text
-Python 3.14.7
+Dataset
+   ↓
+Preprocessing
+   ↓
+Model
+   ↓
+Prediction
+   ↓
+Metrics
+   ↓
+Visualizations
+   ↓
+Interactive UI
 ```
 
-Both developers should create their virtual environment using:
+---
+
+# Technologies Used
+
+- Python
+- NumPy
+- Pandas
+- Matplotlib
+- Streamlit
+- Jupyter Notebook
+- Git
+- GitHub
+
+The core machine learning algorithm was implemented manually to focus on understanding the underlying concepts.
+
+---
+
+# Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/jawwadmalik0704/churnlab.git
+```
+
+Move into the project directory:
+
+```bash
+cd churnlab
+```
+
+Create a virtual environment:
+
+### Windows
 
 ```powershell
-py -3.14 -m venv .venv
+python -m venv .venv
 ```
 
-This ensures that both developers use the same Python major/minor version.
+Activate it:
 
-The `.venv` directory itself is **local and must not be pushed to GitHub**.
+```powershell
+.venv\Scripts\activate
+```
+
+Install the project dependencies:
+
+```powershell
+pip install -r requirements.txt
+```
+
+---
+
+# Run the Application Locally
+
+From the project root:
+
+```powershell
+streamlit run app/app.py
+```
+
+Streamlit will provide a local address similar to:
+
+```text
+http://localhost:8501
+```
+
+Open that address in your browser.
+
+---
+
+# Using the Application
+
+1. Open the Streamlit application.
+2. Review the dataset overview.
+3. Review the model performance metrics.
+4. Inspect the training-loss visualization.
+5. Inspect the learned feature weights.
+6. Enter customer information under **Predict Customer Churn**.
+7. Click **Predict Churn**.
+8. Review the predicted churn risk and probability.
+
+---
+
+# Example Prediction
+
+Example customer:
+
+```text
+Age: 35
+Tenure: 12
+Monthly Charges: 70
+Support Calls: 2
+Contract Type: month-to-month
+```
+
+The model can produce a churn probability and classify the customer as either:
+
+```text
+High Churn Risk
+```
+
+or:
+
+```text
+Low Churn Risk
+```
+
+The exact prediction depends on the trained model and preprocessing pipeline.
+
+---
+
+# What I Learned
+
+This project was primarily a learning exercise in machine learning engineering.
+
+### Data Processing
+
+- Loading structured datasets
+- Separating features and targets
+- Train/test splitting
+- Categorical encoding
+- Numerical conversion
+- Feature standardization
+
+### Mathematics
+
+- Linear combinations
+- Sigmoid function
+- Probability interpretation
+- Loss functions
+- Gradients
+- Gradient descent
+- Parameter optimization
+
+### Machine Learning
+
+- Binary classification
+- Logistic Regression
+- Model training
+- Prediction probabilities
+- Classification thresholds
+- Evaluation metrics
+- Confusion matrices
+
+### Python / Data Science
+
+- NumPy
+- Pandas
+- Matplotlib
+- Jupyter Notebook
+- Modular Python files
+- Connecting multiple modules into one pipeline
+
+### Machine Learning Application Development
+
+- Connecting a trained model to a user interface
+- Building an interactive prediction workflow
+- Displaying model metrics
+- Displaying visualizations
+- Handling user input
+- Turning an ML experiment into a usable application
+
+### Software Development
+
+- Git
+- GitHub
+- Branch-based development
+- Feature branches
+- Pull requests
+- Merging development work
+- Managing project dependencies
+- Organizing a machine learning repository
+
+---
+
+# Five-Day Learning Journey
+
+The project was developed as a five-day progression.
+
+### Day 1 — Data Foundation
+
+Focused on:
+
+- Dataset structure
+- Features and target
+- Loading data
+- Understanding customer churn data
+
+### Day 2 — Preprocessing
+
+Focused on:
+
+- Train/test splitting
+- Categorical encoding
+- Numerical conversion
+- Standardization
+- Sigmoid fundamentals
+
+### Day 3 — Model Training
+
+Focused on:
+
+- Logistic Regression implementation
+- Weights
+- Bias
+- Predictions
+- Loss
+- Gradient descent
+- Model training
+
+### Day 4 — Evaluation & Visualization
+
+Focused on:
+
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+- Confusion matrix
+- Training-loss visualization
+- Feature-weight visualization
+
+### Day 5 — Final Application
+
+Focused on:
+
+- Connecting all components
+- Building the Streamlit interface
+- Interactive customer prediction
+- Model results visualization
+- Final project integration
+- Testing
+- Git/GitHub release workflow
+
+---
+
+# Important Learning Principle
+
+ChurnLab intentionally avoids treating machine learning as a black box.
+
+Instead of only writing:
+
+```python
+model.fit(X, y)
+```
+
+the project explores what happens inside the training process.
+
+The goal is to understand the relationship between:
+
+```text
+Mathematics
+   ↓
+Algorithms
+   ↓
+Python Implementation
+   ↓
+Data Processing
+   ↓
+Model Training
+   ↓
+Evaluation
+   ↓
+Application
+```
+
+This makes ChurnLab a **machine-learning learning project first and a prediction application second**.
+
+---
+
+# Limitations
+
+This project is intentionally small and educational.
+
+The included dataset contains a limited number of customer records and is designed for learning the machine learning workflow rather than producing a production-grade churn prediction system.
+
+Therefore:
+
+- Model performance should not be interpreted as production performance.
+- The dataset should not be treated as representative of a real telecommunications customer population.
+- Larger and more realistic datasets would be required for a production system.
+- Additional validation and model comparison would be required for real-world deployment.
+
+The purpose of the project is to understand the machine learning pipeline and implementation details.
+
+---
+
+# Future Improvements
+
+Possible future improvements include:
+
+- Larger real-world datasets
+- Cross-validation
+- Hyperparameter tuning
+- Multiple classification models
+- Better class-imbalance handling
+- More extensive feature engineering
+- Improved model comparison
+- More comprehensive automated testing
+- Production-grade deployment
+
+---
+
+# Project Goal
+
+The ultimate goal of ChurnLab was not simply to predict whether a customer will churn.
+
+It was to understand how a machine learning model moves from:
+
+```text
+Raw Data
+    ↓
+Mathematics
+    ↓
+Algorithm
+    ↓
+Implementation
+    ↓
+Training
+    ↓
+Evaluation
+    ↓
+Application
+```
+
+and to build that complete workflow with a clear understanding of each major component.
+
+---
+
+## Author
+
+**Mohammed Jabal Malik**
+
+Machine Learning / AI Engineering Learning Project
+
+GitHub: [jawwadmalik0704](https://github.com/jawwadmalik0704)
+
+---
+
+## License
+
+This project is intended primarily as an educational and portfolio project.
