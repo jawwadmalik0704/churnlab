@@ -14,7 +14,13 @@ def confusion_matrix(y_true, y_pred):
     false_positive = np.sum((y_true == 0) & (y_pred == 1))
     false_negative = np.sum((y_true == 1) & (y_pred == 0))
 
-    return np.array([[true_negative, false_positive], [false_negative, true_positive]])
+    return true_negative, false_positive, false_negative, true_positive ##changed to return values only
+
+
+def accuracy(y_true, y_pred):
+    tp, tn, fp, fn = confusion_matrix(y_true, y_pred)
+
+    return (tp + tn) / (tp + tn + fp + fn)
 
 
 def precision(y_true, y_pred):

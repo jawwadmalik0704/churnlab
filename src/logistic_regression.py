@@ -28,7 +28,7 @@ class LogisticRegression:
     def binary_cross_entropy(self, y_true, probabilities):
         epsilon = 1e-15
 
-        probabilities = np.clip(probabilities, epsilon, 1 - epsilon)
+        probabilities = np.clip(probabilities, epsilon, 1 - epsilon) ##Keep every probability between epsilon and 1-epsilon
 
         loss = -np.mean(
             y_true * np.log(probabilities) + (1 - y_true) * np.log(1 - probabilities)
@@ -64,9 +64,7 @@ class LogisticRegression:
             loss = self.binary_cross_entropy(y, probabilities)
             self.loss_history.append(loss)
             # 3. Calculate gradients
-            weight_gradient, bias_gradient = self.calculate_gradients(
-                X, y, probabilities
-            )
+            weight_gradient, bias_gradient = self.calculate_gradients(X, y, probabilities)
 
             # 4. Update parameters
             self.update_parameters(weight_gradient, bias_gradient)
