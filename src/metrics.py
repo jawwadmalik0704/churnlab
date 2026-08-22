@@ -1,46 +1,42 @@
 import numpy as np
 
 
-def accuracy(y_true, y_pred):
-    correct = np.sum(y_true == y_pred)
-    total = len(y_true)
-
-    return correct / total
-
-
 def confusion_matrix(y_true, y_pred):
-    true_positive = np.sum((y_true == 1) & (y_pred == 1))
     true_negative = np.sum((y_true == 0) & (y_pred == 0))
     false_positive = np.sum((y_true == 0) & (y_pred == 1))
     false_negative = np.sum((y_true == 1) & (y_pred == 0))
+    true_positive = np.sum((y_true == 1) & (y_pred == 1))
 
-    return true_negative, false_positive, false_negative, true_positive ##changed to return values only
+    return true_negative, false_positive, false_negative, true_positive
 
 
 def accuracy(y_true, y_pred):
-    tp, tn, fp, fn = confusion_matrix(y_true, y_pred)
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred)
 
-    return (tp + tn) / (tp + tn + fp + fn)
+    total = tn + fp + fn + tp
+
+    if total == 0:
+        return 0.0
+
+    return (tp + tn) / total
 
 
 def precision(y_true, y_pred):
-    true_positive = np.sum((y_true == 1) & (y_pred == 1))
-    false_positive = np.sum((y_true == 0) & (y_pred == 1))
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred)
 
-    if true_positive + false_positive == 0:
+    if tp + fp == 0:
         return 0.0
 
-    return true_positive / (true_positive + false_positive)
+    return tp / (tp + fp)
 
 
 def recall(y_true, y_pred):
-    true_positive = np.sum((y_true == 1) & (y_pred == 1))
-    false_negative = np.sum((y_true == 1) & (y_pred == 0))
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred)
 
-    if true_positive + false_negative == 0:
+    if tp + fn == 0:
         return 0.0
 
-    return true_positive / (true_positive + false_negative)
+    return tp / (tp + fn)
 
 
 def f1_score(y_true, y_pred):
