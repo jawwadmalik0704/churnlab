@@ -1,5 +1,3 @@
-## we have 2 visualisations here
-
 import matplotlib.pyplot as plt
 from src.metrics import confusion_matrix
 
@@ -13,17 +11,14 @@ def plot_loss_curve(loss_history):
     plt.ylabel("Loss")
     plt.title("Training Loss vs Epoch")
     plt.grid(True)
+    plt.tight_layout()
     plt.show()
 
 
-
 def plot_confusion_matrix(y_true, y_pred):
-    tp, tn, fp, fn = confusion_matrix(y_true, y_pred)
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred)
 
-    matrix = [
-        [tn, fp],
-        [fn, tp]
-    ]
+    matrix = [[tn, fp], [fn, tp]]
 
     plt.figure(figsize=(6, 5))
     plt.imshow(matrix)
@@ -39,4 +34,16 @@ def plot_confusion_matrix(y_true, y_pred):
         for j in range(2):
             plt.text(j, i, matrix[i][j], ha="center", va="center")
 
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_feature_weights(feature_names, weights):
+    plt.figure(figsize=(9, 5))
+    plt.bar(feature_names, weights)
+    plt.xlabel("Features")
+    plt.ylabel("Weight")
+    plt.title("Learned Logistic Regression Feature Weights")
+    plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
     plt.show()
