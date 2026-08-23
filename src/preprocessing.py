@@ -20,6 +20,7 @@ def load_data(path):
 
 
 
+
 def train_test_split(X, y, test_size=0.2, random_state=42):
     rng = np.random.default_rng(random_state)
 
@@ -77,50 +78,6 @@ def calculate_std(X, mean):
 
 
 def standardize(X, mean, sd):
-    """
-    Standardize features using mean and standard deviation.
+    if np.any(sd != 0):
+        return (X-mean)/sd
     
-    Applies z-score normalization: (X - mean) / std_dev
-    
-    Parameters
-    ----------
-    X : numpy.ndarray
-        Input features to standardize, shape (n_samples, n_features)
-    mean : numpy.ndarray
-        Mean values for each feature, typically calculated from training data.
-        Shape (n_features,)
-    sd : numpy.ndarray
-        Standard deviation for each feature, typically calculated from training data.
-        Shape (n_features,)
-    
-    Returns
-    -------
-    numpy.ndarray
-        Standardized features with shape (n_samples, n_features).
-        For each feature: (X_feature - mean_feature) / sd_feature
-        
-    Raises
-    ------
-    ValueError
-        If any standard deviations are zero, indicating zero variance in that feature.
-        This typically means the training data has no variation for that feature,
-        which would cause division by zero.
-    
-    Notes
-    -----
-    - Mean and std should be calculated ONLY from training data
-    - The same mean and std should be applied to both training and test data
-    - This ensures consistent preprocessing across train and test sets
-    """
-    # Check for zero standard deviations (features with no variance)
-    if np.any(sd == 0):
-        zero_std_indices = np.where(sd == 0)[0]
-        raise ValueError(
-            f"Cannot standardize: feature(s) at index {zero_std_indices.tolist()} "
-            f"have zero standard deviation. This indicates no variance in those "
-            f"feature(s) within the training data. Standard deviations: {sd}. "
-            f"Check your training data for features with constant values."
-        )
-    
-    # Perform z-score standardization
-    return (X - mean) / sd
