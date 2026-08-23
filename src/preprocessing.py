@@ -78,6 +78,6 @@ def calculate_std(X, mean):
 
 
 def standardize(X, mean, sd):
-    if np.any(sd != 0):
-        return (X-mean)/sd
+    sd_safe = np.where(sd == 0, 1.0, sd)
+    return (X - mean) / sd_safe
     

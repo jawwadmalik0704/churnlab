@@ -15,9 +15,11 @@ if str(PROJECT_ROOT) not in sys.path:
 # IMPORTS
 # ============================================================
 
+import os
 import numpy as np
 import pandas as pd
 import streamlit as st
+import matplotlib.pyplot as plt
 
 from src.preprocessing import (
     load_data,
@@ -121,14 +123,16 @@ with st.sidebar:
 
 
 @st.cache_data
-def get_data():
+def get_data(mtime):
 
     dataset_path = PROJECT_ROOT / "data" / "dataset.csv"
 
     return load_data(dataset_path)
 
 
-df = get_data()
+dataset_path = PROJECT_ROOT / "data" / "dataset.csv"
+mtime = os.path.getmtime(dataset_path) if dataset_path.exists() else 0
+df = get_data(mtime)
 
 
 # ============================================================
@@ -255,12 +259,16 @@ X_test_scaled = standardize(
 
 st.header("Model Training")
 
-model = LogisticRegression(
-    learning_rate=0.1,
-    epochs=1000,
-)
+@st.cache_resource
+def train_model_pipeline(_X_train, _y_train):
+    model = LogisticRegression(
+        learning_rate=0.1,
+        epochs=1000,
+    )
+    model.fit(_X_train, _y_train)
+    return model
 
-model.fit(
+model = train_model_pipeline(
     X_train_scaled,
     y_train_num,
 )
@@ -383,6 +391,7 @@ with cm_col1:
         confusion_fig,
         clear_figure=True,
     )
+    plt.close(confusion_fig)
 
 
 with cm_col2:
@@ -450,6 +459,7 @@ if hasattr(model, "loss_history"):
         loss_fig,
         clear_figure=True,
     )
+    plt.close(loss_fig)
 
 
 # ============================================================
@@ -469,6 +479,7 @@ st.pyplot(
     weights_fig,
     clear_figure=True,
 )
+plt.close(weights_fig)
 
 
 # ============================================================
@@ -477,7 +488,9 @@ st.pyplot(
 
 st.header("Predict Customer Churn")
 
-st.write("Enter customer information to estimate " "the probability of churn.")
+st.info("💡 **Inference Sandbox:** The inputs below calculate the churn probability for a single, new customer. They do **not** add data to the training/test set or change the global Model Performance metrics shown above.")
+
+st.write("Enter customer information to estimate the probability of churn.")
 
 
 col1, col2 = st.columns(2)
