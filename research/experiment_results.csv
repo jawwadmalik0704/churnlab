@@ -1,0 +1,7 @@
+Features,Learning Rate,Final Loss,Convergence Epoch,Accuracy,F1 Score
+Raw,0.001,0.478659,Not reached,0.77,0.708861
+Raw,0.01,3.121533,Not reached,0.65,0.42623
+Raw,0.1,9.974895,Not reached,0.72,0.75
+Standardized,0.001,0.576303,Not reached,0.93,0.921348
+Standardized,0.01,0.353678,Not reached,0.93,0.921348
+Standardized,0.1,0.288547,351,0.95,0.94382
